@@ -134,7 +134,6 @@ import (
 	"errors"
 	"encoding/binary"
 	"strings"
-	"fmt"
 	"database/sql"
 	_ "github.com/mattn/go-adodb" 
 )
@@ -217,15 +216,15 @@ func Open(driver, filen string) (*sql.DB, error){
 	for _,tok := range toks {
 		pair := strings.Split(tok,"=")
 		if len(pair)>1 && pair[0] == "Data Source" {
-			db.enc, err = readEncoding(pair[1])
+			enc, err := readEncoding(pair[1])
 			if err != nil {
 				return nil,err
 			}
-			filen = filen + `;Jet OLEDB:Database Password=` + db.enc + `;`
+			filen = filen + `;Jet OLEDB:Database Password=` + enc + `;`
 		}
 	}
 
-	db, err = sql.Open("adodb", `Provider=Microsoft.ACE.OLEDB.12.0;Data Source=`+ filen +)
+	db, err = sql.Open("adodb", filen)
 	if err != nil {return nil,err}
 
 	err = db.Ping()
