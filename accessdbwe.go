@@ -220,20 +220,22 @@ func Open(driver, filen string) (*sql.DB, error) {
 	var err error
 	var db *sql.DB
 
-	// extract filename from filen string
-	toks := strings.Split(filen, ";")
-	for _, tok := range toks {
-		pair := strings.Split(tok, "=")
-		if len(pair) > 1 && pair[0] == "Data Source" {
-			enc, err := readEncoding(pair[1])
-			if err != nil {
-				return nil, err
+	if driver == "adodb" {
+		// extract filename from filen string
+		toks := strings.Split(filen, ";")
+		for _, tok := range toks {
+			pair := strings.Split(tok, "=")
+			if len(pair) > 1 && pair[0] == "Data Source" {
+				enc, err := readEncoding(pair[1])
+				if err != nil {
+					return nil, err
+				}
+				filen = filen + `;Jet OLEDB:Database Password=` + enc + `;`
 			}
-			filen = filen + `;Jet OLEDB:Database Password=` + enc + `;`
 		}
 	}
 
-	db, err = sql.Open("adodb", filen)
+	db, err = sql.Open(driver, filen)
 	if err != nil {
 		return nil, err
 	}
