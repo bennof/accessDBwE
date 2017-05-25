@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// +build windows
+
 // code is based on some c experiments (more efficient less platform independent)
 // feel free to implement this code in CGO
 
