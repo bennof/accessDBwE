@@ -10,7 +10,7 @@ This should work:
 
     go get github.com/bennof/accessDBwE
 
-## Documantation 
+## Documentation 
 
 For API and usage see:
 
